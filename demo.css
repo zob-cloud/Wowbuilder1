@@ -1,0 +1,76 @@
+/* RESET AND BASE STYLES */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background: #0f0f0f;
+  color: #fff;
+  line-height: 1.6;
+}
+
+h1 {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.demo-projects-container {
+  max-width: 1000px;
+  margin: auto;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.demo-project-card {
+  background: #1a1a1a;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.demo-project-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+}
+
+.demo-project-card img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.demo-project-card h3 {
+  margin: 15px 0 10px;
+  font-size: 18px;
+}
+
+.demo-project-card p {
+  font-size: 0.9rem;
+  color: #bbb;
+}
+
+.demo-project-card .btn {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 10px 20px;
+  background: #2563eb;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 6px;
+}
+
+.demo-project-card .btn:hover {
+  background: #1d4ed8;
+}
+
+/* RESPONSIVE GRID */
+@media (max-width: 600px) {
+  .demo-projects-container {
+    grid-template-columns: 1fr;
+  }
+}

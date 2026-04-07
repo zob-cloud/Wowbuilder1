@@ -1,0 +1,1715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimal Blog — Thoughts & Ideas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #fafaf8;
+            --bg-card: #ffffff;
+            --text: #1a1a1a;
+            --text-muted: #6b6b6b;
+            --text-light: #9b9b9b;
+            --accent: #2d2d2d;
+            --border: #e8e8e4;
+            --tag-bg: #f0f0ec;
+            --highlight: #1a1a1a;
+            --hover: #f5f5f2;
+        }
+
+        [data-theme="dark"] {
+            --bg: #0f0f0f;
+            --bg-card: #161616;
+            --text: #e8e8e4;
+            --text-muted: #9b9b9b;
+            --text-light: #6b6b6b;
+            --accent: #e8e8e4;
+            --border: #2a2a2a;
+            --tag-bg: #1e1e1e;
+            --highlight: #ffffff;
+            --hover: #1a1a1a;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: var(--bg);
+            color: var(--text);
+            transition: background 0.3s ease, color 0.3s ease;
+            min-height: 100vh;
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--bg);
+            border-bottom: 1px solid var(--border);
+            padding: 0 40px;
+            transition: background 0.3s ease;
+        }
+
+        .header-inner {
+            max-width: 780px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+        }
+
+        .logo {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            color: var(--text-light);
+            font-weight: 400;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 24px;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            letter-spacing: 0.3px;
+            transition: color 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--text);
+        }
+
+        .nav-links a.active {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            color: var(--text-muted);
+        }
+
+        .theme-toggle:hover {
+            background: var(--hover);
+            color: var(--text);
+        }
+
+        /* ===== MAIN LAYOUT ===== */
+        main {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        /* ===== PAGES ===== */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* ===== HOME PAGE ===== */
+        .hero {
+            padding: 70px 0 50px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 50px;
+        }
+
+        .hero-label {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -1.5px;
+            margin-bottom: 18px;
+            color: var(--text);
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            max-width: 520px;
+        }
+
+        /* ===== FILTER BAR ===== */
+        .filter-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 35px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .filter-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .filter-tag {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 0.78rem;
+            padding: 5px 14px;
+            border-radius: 50px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            letter-spacing: 0.3px;
+        }
+
+        .filter-tag:hover {
+            border-color: var(--text-muted);
+            color: var(--text);
+        }
+
+        .filter-tag.active {
+            background: var(--text);
+            color: var(--bg);
+            border-color: var(--text);
+        }
+
+        .post-count {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        /* ===== BLOG POST LIST ===== */
+        .post-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .post-item {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 20px;
+            align-items: start;
+            padding: 28px 0;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .post-item:first-child {
+            border-top: 1px solid var(--border);
+        }
+
+        .post-item:hover .post-title {
+            color: var(--text-light);
+        }
+
+        .post-item:hover .post-arrow {
+            transform: translate(3px, -3px);
+            opacity: 1;
+        }
+
+        .post-meta-top {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .post-tag {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-light);
+            background: var(--tag-bg);
+            padding: 3px 10px;
+            border-radius: 4px;
+        }
+
+        .post-featured {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--bg);
+            background: var(--text);
+            padding: 3px 10px;
+            border-radius: 4px;
+        }
+
+        .post-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: -0.4px;
+            line-height: 1.3;
+            margin-bottom: 8px;
+            transition: color 0.2s ease;
+            color: var(--text);
+        }
+
+        .post-excerpt {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .post-meta-bottom {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .post-date {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 0.78rem;
+            color: var(--text-light);
+        }
+
+        .post-read-time {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 0.78rem;
+            color: var(--text-light);
+        }
+
+        .post-read-time::before {
+            content: '·';
+            margin-right: 12px;
+        }
+
+        .post-arrow {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            opacity: 0.5;
+            transition: all 0.2s ease;
+            margin-top: 4px;
+            flex-shrink: 0;
+        }
+
+        /* ===== FEATURED POST ===== */
+        .featured-post {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 35px;
+            margin-bottom: 50px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .featured-post::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 100%;
+            background: var(--text);
+        }
+
+        .featured-post:hover {
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            transform: translateY(-2px);
+        }
+
+        [data-theme="dark"] .featured-post:hover {
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+        }
+
+        .featured-label {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-light);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .featured-label::before {
+            content: '';
+            width: 20px;
+            height: 1px;
+            background: var(--text-light);
+        }
+
+        .featured-post h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: -0.6px;
+            line-height: 1.3;
+            margin-bottom: 12px;
+        }
+
+        .featured-post p {
+            color: var(--text-muted);
+            line-height: 1.7;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+        }
+
+        .featured-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .featured-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .featured-meta span {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .read-btn {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 0.82rem;
+            color: var(--text);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            transition: gap 0.2s ease;
+        }
+
+        .read-btn:hover {
+            gap: 10px;
+        }
+
+        /* ===== NEWSLETTER ===== */
+        .newsletter {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 40px;
+            margin: 60px 0;
+            text-align: center;
+            background: var(--bg-card);
+        }
+
+        .newsletter-icon {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .newsletter h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: -0.4px;
+            margin-bottom: 10px;
+        }
+
+        .newsletter p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            max-width: 380px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 10px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 11px 16px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--bg);
+            color: var(--text);
+            font-size: 0.9rem;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .newsletter-form input::placeholder {
+            color: var(--text-light);
+        }
+
+        .newsletter-form input:focus {
+            border-color: var(--text-muted);
+        }
+
+        .newsletter-form button {
+            padding: 11px 20px;
+            background: var(--text);
+            color: var(--bg);
+            border: none;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .newsletter-form button:hover {
+            opacity: 0.8;
+        }
+
+        .newsletter-success {
+            display: none;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            margin-top: 15px;
+        }
+
+        /* ===== SINGLE POST ===== */
+        #post-page {
+            padding-bottom: 80px;
+        }
+
+        .post-header {
+            padding: 60px 0 40px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 45px;
+        }
+
+        .post-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 30px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .post-back:hover {
+            color: var(--text);
+        }
+
+        .post-header-tags {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+
+        .post-header h1 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            line-height: 1.2;
+            margin-bottom: 18px;
+        }
+
+        .post-header-desc {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+
+        .post-header-meta {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 0.82rem;
+            color: var(--text-light);
+        }
+
+        .post-header-meta .author {
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .post-header-meta .sep {
+            color: var(--border);
+        }
+
+        /* ===== ARTICLE CONTENT ===== */
+        .article-content {
+            line-height: 1.85;
+            font-size: 1.05rem;
+            color: var(--text);
+        }
+
+        .article-content p {
+            margin-bottom: 24px;
+            color: var(--text-muted);
+        }
+
+        .article-content h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin: 40px 0 16px;
+            color: var(--text);
+        }
+
+        .article-content h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin: 30px 0 12px;
+            color: var(--text);
+        }
+
+        .article-content blockquote {
+            border-left: 3px solid var(--text);
+            padding: 2px 0 2px 24px;
+            margin: 32px 0;
+            font-style: italic;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .article-content blockquote cite {
+            display: block;
+            font-size: 0.82rem;
+            font-style: normal;
+            margin-top: 10px;
+            color: var(--text-light);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        .article-content code {
+            font-family: 'Courier New', monospace;
+            font-size: 0.88rem;
+            background: var(--tag-bg);
+            padding: 2px 7px;
+            border-radius: 4px;
+            color: var(--text);
+        }
+
+        .article-content pre {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 24px;
+            overflow-x: auto;
+            margin: 28px 0;
+        }
+
+        .article-content pre code {
+            background: none;
+            padding: 0;
+            font-size: 0.88rem;
+            line-height: 1.7;
+        }
+
+        .article-content ul,
+        .article-content ol {
+            padding-left: 24px;
+            margin-bottom: 24px;
+        }
+
+        .article-content li {
+            margin-bottom: 8px;
+            color: var(--text-muted);
+        }
+
+        .article-content a {
+            color: var(--text);
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        .article-content img {
+            width: 100%;
+            border-radius: 10px;
+            margin: 30px 0;
+            border: 1px solid var(--border);
+        }
+
+        .article-content hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 40px 0;
+        }
+
+        /* ===== POST DIVIDER ===== */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin: 50px 0;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .divider span {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* ===== POST FOOTER ===== */
+        .post-footer {
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 1px solid var(--border);
+        }
+
+        .post-tags-section {
+            margin-bottom: 40px;
+        }
+
+        .post-tags-section h4 {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-light);
+            margin-bottom: 12px;
+        }
+
+        .tags-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .post-footer-tag {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 0.8rem;
+            padding: 6px 14px;
+            border-radius: 6px;
+            background: var(--tag-bg);
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+        }
+
+        .share-section h4 {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-light);
+            margin-bottom: 12px;
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .share-btn {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 0.8rem;
+            padding: 8px 16px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .share-btn:hover {
+            background: var(--hover);
+            color: var(--text);
+            border-color: var(--text-muted);
+        }
+
+        /* ===== RELATED POSTS ===== */
+        .related-posts {
+            margin-top: 60px;
+        }
+
+        .related-posts h3 {
+            font-size: 0.75rem;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+
+        .related-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .related-card {
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: var(--bg-card);
+        }
+
+        .related-card:hover {
+            border-color: var(--text-muted);
+            transform: translateY(-2px);
+        }
+
+        .related-card .post-tag {
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+
+        .related-card h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            line-height: 1.3;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        .related-card span {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 0.75rem;
+            color: var(--text-light);
+        }
+
+        /* ===== ABOUT PAGE ===== */
+        .about-page {
+            padding: 70px 0;
+        }
+
+        .about-header {
+            margin-bottom: 50px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .about-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin-bottom: 16px;
+        }
+
+        .about-header p {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            max-width: 500px;
+        }
+
+        .about-section {
+            margin-bottom: 50px;
+        }
+
+        .about-section h2 {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+
+        .about-section p {
+            font-size: 1rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin-bottom: 16px;
+        }
+
+        .about-links {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .about-link-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            color: var(--text);
+        }
+
+        .about-link-item:hover .about-link-arrow {
+            transform: translate(3px, -3px);
+        }
+
+        .about-link-label {
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .about-link-sub {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-top: 2px;
+        }
+
+        .about-link-arrow {
+            font-size: 1rem;
+            color: var(--text-light);
+            transition: transform 0.2s ease;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 32px 40px;
+            margin-top: 40px;
+        }
+
+        .footer-inner {
+            max-width: 780px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .footer-left p {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .footer-right {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-right a {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 0.8rem;
+            color: var(--text-light);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .footer-right a:hover {
+            color: var(--text);
+        }
+
+        /* ===== SEARCH ===== */
+        .search-bar {
+            position: relative;
+            margin-bottom: 35px;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 12px 16px 12px 42px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--bg-card);
+            color: var(--text);
+            font-size: 0.9rem;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .search-bar input::placeholder {
+            color: var(--text-light);
+        }
+
+        .search-bar input:focus {
+            border-color: var(--text-muted);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* ===== READING PROGRESS ===== */
+        .progress-bar {
+            position: fixed;
+            top: 64px;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background: var(--text);
+            z-index: 99;
+            transition: width 0.1s linear;
+        }
+
+        /* ===== EMPTY STATE ===== */
+        .empty-state {
+            text-align: center;
+            padding: 60px 0;
+            color: var(--text-light);
+        }
+
+        .empty-state p {
+            font-size: 0.9rem;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            margin-top: 10px;
+        }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--text);
+            color: var(--bg);
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            z-index: 999;
+            transition: transform 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 640px) {
+            header { padding: 0 20px; }
+            main { padding: 0 20px; }
+            footer { padding: 24px 20px; }
+
+            .nav-links { display: none; }
+            .hero { padding: 50px 0 40px; }
+            .hero h1 { font-size: 2rem; }
+            .post-header h1 { font-size: 1.8rem; }
+            .related-grid { grid-template-columns: 1fr; }
+            .newsletter { padding: 28px 20px; }
+            .newsletter-form { flex-direction: column; }
+            .featured-post { padding: 24px; }
+            .about-header h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Reading Progress -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <!-- ===== HEADER ===== -->
+    <header>
+        <div class="header-inner">
+            <a class="logo" href="#" onclick="showPage('home')">
+                words<span>/thoughts</span>
+            </a>
+            <div class="header-right">
+                <ul class="nav-links">
+                    <li><a href="#" class="active" id="nav-home" onclick="showPage('home')">Home</a></li>
+                    <li><a href="#" id="nav-about" onclick="showPage('about')">About</a></li>
+                </ul>
+                <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== MAIN ===== -->
+    <main>
+
+        <!-- ===== HOME PAGE ===== -->
+        <div class="page active" id="home-page">
+
+            <div class="hero">
+                <p class="hero-label">A minimal blog</p>
+                <h1>Thoughts on design,<br>code & everything else.</h1>
+                <p>Writing about ideas that matter. Exploring the intersection of creativity and technology, one post at a time.</p>
+            </div>
+
+            <!-- Featured Post -->
+            <div class="featured-post" onclick="openPost(0)">
+                <div class="featured-label">Featured Post</div>
+                <h2>The Art of Writing Less: Why Minimalism Makes Better Content</h2>
+                <p>In a world drowning in content, the most powerful thing a writer can do is say more with less. This is a deep dive into the philosophy of minimal writing...</p>
+                <div class="featured-footer">
+                    <div class="featured-meta">
+                        <span>Alex Chen</span>
+                        <span>·</span>
+                        <span>Dec 18, 2024</span>
+                        <span>·</span>
+                        <span>8 min read</span>
+                    </div>
+                    <span class="read-btn">Read now →</span>
+                </div>
+            </div>
+
+            <!-- Search -->
+            <div class="search-bar">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput"
+                    placeholder="Search posts..."
+                    oninput="filterPosts()">
+            </div>
+
+            <!-- Filter Tags -->
+            <div class="filter-bar">
+                <div class="filter-tags">
+                    <button class="filter-tag active" onclick="setFilter('all', this)">All</button>
+                    <button class="filter-tag" onclick="setFilter('design', this)">Design</button>
+                    <button class="filter-tag" onclick="setFilter('code', this)">Code</button>
+                    <button class="filter-tag" onclick="setFilter('life', this)">Life</button>
+                    <button class="filter-tag" onclick="setFilter('essay', this)">Essay</button>
+                </div>
+                <span class="post-count" id="postCount">6 posts</span>
+            </div>
+
+            <!-- Post List -->
+            <div class="post-list" id="postList"></div>
+
+            <!-- Newsletter -->
+            <div class="newsletter">
+                <span class="newsletter-icon">✉️</span>
+                <h3>Get new posts in your inbox</h3>
+                <p>No spam, ever. Just thoughtful writing delivered whenever something new is published.</p>
+                <form class="newsletter-form" onsubmit="subscribeNewsletter(event)">
+                    <input type="email" id="newsletterEmail"
+                        placeholder="your@email.com" required>
+                    <button type="submit">Subscribe</button>
+                </form>
+                <p class="newsletter-success" id="nlSuccess">
+                    ✓ You're subscribed! Thank you.
+                </p>
+            </div>
+
+        </div>
+
+        <!-- ===== SINGLE POST PAGE ===== -->
+        <div class="page" id="post-page">
+            <div class="post-header">
+                <a class="post-back" onclick="showPage('home')">← Back to all posts</a>
+                <div class="post-header-tags" id="postHeaderTags"></div>
+                <h1 id="postTitle"></h1>
+                <p class="post-header-desc" id="postDesc"></p>
+                <div class="post-header-meta">
+                    <span class="author" id="postAuthor"></span>
+                    <span class="sep">·</span>
+                    <span id="postDate"></span>
+                    <span class="sep">·</span>
+                    <span id="postReadTime"></span>
+                </div>
+            </div>
+
+            <div class="article-content" id="articleContent"></div>
+
+            <div class="post-footer">
+                <div class="post-tags-section">
+                    <h4>Topics</h4>
+                    <div class="tags-row" id="postFooterTags"></div>
+                </div>
+                <div class="share-section">
+                    <h4>Share this post</h4>
+                    <div class="share-buttons">
+                        <button class="share-btn" onclick="sharePost('twitter')">𝕏 Twitter</button>
+                        <button class="share-btn" onclick="sharePost('copy')">🔗 Copy Link</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="related-posts">
+                <h3>More posts</h3>
+                <div class="related-grid" id="relatedGrid"></div>
+            </div>
+        </div>
+
+        <!-- ===== ABOUT PAGE ===== -->
+        <div class="page" id="about-page">
+            <div class="about-page">
+                <div class="about-header">
+                    <h1>Hey, I'm Alex 👋</h1>
+                    <p>Writer, designer, and occasional developer based in San Francisco. I write about design systems, creative process, and building things on the internet.</p>
+                </div>
+
+                <div class="about-section">
+                    <h2>About this blog</h2>
+                    <p>This is a space where I think out loud. I write about design, code, creativity, and the random things that capture my attention. I try to publish something new every week or two.</p>
+                    <p>I believe in writing that respects the reader's time — clear, honest, and direct. No SEO padding, no fluff. Just ideas worth sharing.</p>
+                </div>
+
+                <div class="about-section">
+                    <h2>What I write about</h2>
+                    <div class="post-list" style="margin-bottom: 0;">
+                        <div style="display:flex; gap:10px; flex-wrap:wrap; padding: 10px 0;">
+                            <span class="post-footer-tag" style="background:var(--tag-bg);border:1px solid var(--border);padding:8px 16px;border-radius:8px;font-family:sans-serif;font-size:0.85rem;color:var(--text-muted)">🎨 Design</span>
+                            <span class="post-footer-tag" style="background:var(--tag-bg);border:1px solid var(--border);padding:8px 16px;border-radius:8px;font-family:sans-serif;font-size:0.85rem;color:var(--text-muted)">💻 Code</span>
+                            <span class="post-footer-tag" style="background:var(--tag-bg);border:1px solid var(--border);padding:8px 16px;border-radius:8px;font-family:sans-serif;font-size:0.85rem;color:var(--text-muted)">✍️ Writing</span>
+                            <span class="post-footer-tag" style="background:var(--tag-bg);border:1px solid var(--border);padding:8px 16px;border-radius:8px;font-family:sans-serif;font-size:0.85rem;color:var(--text-muted)">🧠 Thinking</span>
+                            <span class="post-footer-tag" style="background:var(--tag-bg);border:1px solid var(--border);padding:8px 16px;border-radius:8px;font-family:sans-serif;font-size:0.85rem;color:var(--text-muted)">🌱 Life</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="about-section">
+                    <h2>Find me elsewhere</h2>
+                    <div class="about-links">
+                        <a class="about-link-item" href="#">
+                            <div>
+                                <div class="about-link-label">Twitter / X</div>
+                                <div class="about-link-sub">@alexchen</div>
+                            </div>
+                            <span class="about-link-arrow">↗</span>
+                        </a>
+                        <a class="about-link-item" href="#">
+                            <div>
+                                <div class="about-link-label">GitHub</div>
+                                <div class="about-link-sub">Open source projects</div>
+                            </div>
+                            <span class="about-link-arrow">↗</span>
+                        </a>
+                        <a class="about-link-item" href="#">
+                            <div>
+                                <div class="about-link-label">Read.cv</div>
+                                <div class="about-link-sub">Work history & portfolio</div>
+                            </div>
+                            <span class="about-link-arrow">↗</span>
+                        </a>
+                        <a class="about-link-item" href="#">
+                            <div>
+                                <div class="about-link-label">Email me</div>
+                                <div class="about-link-sub">alex@blog.com</div>
+                            </div>
+                            <span class="about-link-arrow">↗</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-left">
+                <p>© 2024 words/thoughts — Written with care.</p>
+            </div>
+            <div class="footer-right">
+                <a href="#">RSS</a>
+                <a href="#" onclick="showPage('about')">About</a>
+                <a href="#">Twitter</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== JAVASCRIPT ===== -->
+    <script>
+
+        // ===== BLOG DATA =====
+        const posts = [
+            {
+                id: 0,
+                title: "The Art of Writing Less: Why Minimalism Makes Better Content",
+                description: "In a world drowning in content, the most powerful thing a writer can do is say more with less.",
+                tag: "essay",
+                tagLabel: "Essay",
+                date: "Dec 18, 2024",
+                author: "Alex Chen",
+                readTime: "8 min read",
+                featured: true,
+                content: `
+                    <p>There's a famous quote often attributed to Blaise Pascal: <em>"I would have written a shorter letter, but I did not have the time."</em> This single sentence captures something profound about writing — brevity is hard. Cutting is harder than adding.</p>
+
+                    <h2>The Problem With More</h2>
+                    <p>We live in an era of content abundance. Every day, millions of articles, posts, and newsletters flood the internet. Most of it is noise. The irony? Most writers think the solution to being heard is to produce <em>more</em>. More words. More posts. More content.</p>
+                    <p>But that's exactly backwards.</p>
+
+                    <blockquote>
+                        "Perfection is achieved, not when there is nothing more to add, but when there is nothing left to take away."
+                        <cite>— Antoine de Saint-Exupéry</cite>
+                    </blockquote>
+
+                    <h2>What Minimal Writing Actually Means</h2>
+                    <p>Minimalism in writing isn't about being sparse or withholding. It's about precision. Every sentence should earn its place. Every word should serve a purpose. When you cut a sentence and nothing is lost, that sentence should go.</p>
+                    <p>Here's a simple test: read your draft and ask — if I removed this paragraph, would the reader miss anything essential? If the answer is no, cut it.</p>
+
+                    <h3>Three Rules I Follow</h3>
+                    <ul>
+                        <li>Write the first draft without editing. Get everything out.</li>
+                        <li>Wait 24 hours before the first edit. Distance creates clarity.</li>
+                        <li>Cut at least 20% of the word count in revision. Always.</li>
+                    </ul>
+
+                    <h2>The Reader's Time is Sacred</h2>
+                    <p>Every word you write is a tax on the reader's attention. Good writing respects that. When you pad your writing with filler — unnecessary preambles, restated conclusions, throat-clearing paragraphs — you're stealing time from someone who trusted you with it.</p>
+
+                    <pre><code>// Bad
+function getUserData(userId) {
+    // This function gets the user data for a given user ID
+    const result = fetchFromDatabase(userId);
+    return result;
+}
+
+// Good
+function getUser(id) {
+    return fetchFromDatabase(id);
+}</code></pre>
+
+                    <p>The same principle applies to prose. Say what you mean. Then stop.</p>
+
+                    <h2>How to Start</h2>
+                    <p>If you want to write better, write shorter. Pick your last piece of writing. Set a goal to cut it by 25%. You'll be surprised — almost always, the shorter version is better. Sharper. More confident.</p>
+                    <p>The space you leave gives readers room to think. That's not emptiness. That's trust.</p>
+
+                    <hr>
+
+                    <p>Minimalism in writing is really just respect — for your reader, for your ideas, and for the craft itself. Write less. Mean more.</p>
+                `
+            },
+            {
+                id: 1,
+                title: "Design Systems Are About People, Not Components",
+                description: "Everyone focuses on the UI library. But the real value of a design system is the shared language it creates.",
+                tag: "design",
+                tagLabel: "Design",
+                date: "Dec 12, 2024",
+                author: "Alex Chen",
+                readTime: "6 min read",
+                featured: false,
+                content: `
+                    <p>When most teams talk about building a design system, the conversation quickly turns to components. Buttons, inputs, modals, cards. A Figma library here, a Storybook there. The component library becomes the deliverable.</p>
+                    <p>But that's the wrong frame entirely.</p>
+
+                    <h2>The Real Output Is Alignment</h2>
+                    <p>A design system is a communication tool. Its real job is to create a shared vocabulary between designers, developers, and product managers. When everyone uses the same words for the same things, decisions get faster. Reviews get shorter. Handoffs stop being painful.</p>
+
+                    <blockquote>
+                        "A design system is only as good as the culture around it."
+                        <cite>— Brad Frost</cite>
+                    </blockquote>
+
+                    <h2>Components Are a Byproduct</h2>
+                    <p>The components that come out of a design system are the artifact of alignment, not the goal. When your team truly agrees on what a "card" is and when to use it, building the component is almost trivial. The hard part was the conversation.</p>
+
+                    <h3>Where Teams Go Wrong</h3>
+                    <ul>
+                        <li>Building components before defining principles</li>
+                        <li>Creating systems for developers, ignoring designers (or vice versa)</li>
+                        <li>Shipping a design system without adoption strategy</li>
+                        <li>Treating it as a one-time project instead of a living product</li>
+                    </ul>
+
+                    <h2>Start With Language</h2>
+                    <p>Before you design a single component, write a glossary. What do you call the navigation? The hero? The helper text under a form field? Get your team to agree on names. That document will do more for consistency than any component library.</p>
+                    <p>Design systems are about people. Build for them first.</p>
+                `
+            },
+            {
+                id: 2,
+                title: "Why I Stopped Using Most Developer Tools",
+                description: "More tools, more problems. A reflection on simplicity in a developer's workflow.",
+                tag: "code",
+                tagLabel: "Code",
+                date: "Dec 5, 2024",
+                author: "Alex Chen",
+                readTime: "5 min read",
+                featured: false,
+                content: `
+                    <p>Two years ago, my development setup was a maze. Eleven VS Code extensions. Four different terminal multiplexers I'd "try out." A custom dotfile repository with 800 lines of shell configuration. I spent more time configuring tools than using them.</p>
+
+                    <h2>The Tooling Trap</h2>
+                    <p>There's a particular kind of procrastination that disguises itself as productivity. Optimizing your workflow feels like work. Adding a new linter, setting up a new shortcut, trying a new editor — it all feels productive. It almost never is.</p>
+
+                    <h2>What I Actually Use Now</h2>
+                    <ul>
+                        <li>One text editor (VS Code, vanilla)</li>
+                        <li>The default terminal</li>
+                        <li>Git on the command line</li>
+                        <li>A browser and devtools</li>
+                    </ul>
+
+                    <p>That's it. No fancy setup. And I ship more than ever.</p>
+
+                    <blockquote>
+                        "Constraints are the mother of creativity."
+                        <cite>— Unknown</cite>
+                    </blockquote>
+
+                    <h2>The Boring Stack Wins</h2>
+                    <p>The best tools are the ones you stop thinking about. When your editor just works, you think about the code. When your terminal just works, you think about the command. Boring tools free your mind for interesting problems.</p>
+                    <p>Stop tweaking. Start building.</p>
+                `
+            },
+            {
+                id: 3,
+                title: "On Consistency: The Most Underrated Creative Skill",
+                description: "Talent matters less than showing up. Here's how consistency compounds over time.",
+                tag: "life",
+                tagLabel: "Life",
+                date: "Nov 28, 2024",
+                author: "Alex Chen",
+                readTime: "4 min read",
+                featured: false,
+                content: `
+                    <p>I used to believe creativity was about inspiration. That good work came from moments of clarity, sudden insights, the right mood. I was wrong. Good work comes from showing up even when you don't feel like it.</p>
+
+                    <h2>The Compound Effect</h2>
+                    <p>Writing 300 words a day doesn't sound impressive. But 300 words × 365 days = 109,500 words. That's a novel. Done in one year of "not impressive" daily work.</p>
+                    <p>Consistency is a form of compound interest. Small inputs, reliably applied, produce outsized outputs over time. The hard part is that the results aren't visible at first.</p>
+
+                    <h2>The Gap Between Output and Quality</h2>
+                    <p>Ira Glass talked about "the taste gap" — the distance between what you can recognize as good and what you can produce. Early on, your taste is high but your output is low. The only way to close the gap is to produce a lot.</p>
+
+                    <blockquote>
+                        "The first 10,000 photographs are your worst."
+                        <cite>— Henri Cartier-Bresson</cite>
+                    </blockquote>
+
+                    <h2>Make It Mechanical</h2>
+                    <p>Don't rely on motivation. Motivation is a feeling — unreliable, weather-dependent. Instead, make the work mechanical. Same time, same place, same ritual. You sit down not because you feel like it, but because it's Tuesday at 8am and that's what you do.</p>
+                    <p>Show up. Even badly. Especially badly. The work improves. The habit stays.</p>
+                `
+            },
+            {
+                id: 4,
+                title: "The Case for Slower, Longer Thinking",
+                description: "Fast opinions are cheap. The most valuable thinking happens when you slow down.",
+                tag: "essay",
+                tagLabel: "Essay",
+                date: "Nov 20, 2024",
+                author: "Alex Chen",
+                readTime: "7 min read",
+                featured: false,
+                content: `
+                    <p>We live in an attention economy optimized for speed. Hot takes. Quick threads. Instant reactions. The faster you respond to something, the more engagement you get. The slower, more considered response arrives too late — the conversation has moved on.</p>
+
+                    <h2>What Speed Costs You</h2>
+                    <p>Fast thinking is mostly pattern matching. You see something new and your brain categorizes it based on things you've seen before. It's efficient. It's also often wrong. The most interesting ideas don't fit existing categories.</p>
+                    <p>Slow thinking is different. It makes space for uncertainty, for contradiction, for changing your mind. It's uncomfortable. Most people avoid it.</p>
+
+                    <h2>Practices for Slower Thinking</h2>
+                    <ul>
+                        <li>Write before you speak. Writing forces clarity.</li>
+                        <li>Wait 48 hours before forming opinions on news.</li>
+                        <li>Read books, not just articles. Long form builds longer thought.</li>
+                        <li>Spend time with ideas you disagree with.</li>
+                    </ul>
+
+                    <blockquote>
+                        "Thinking is the hardest work there is, which is probably the reason why so few engage in it."
+                        <cite>— Henry Ford</cite>
+                    </blockquote>
+
+                    <h2>The Long Game</h2>
+                    <p>People who think slowly and carefully build better mental models. Better mental models make better predictions. Better predictions lead to better decisions. It's not a fast loop — but it compounds.</p>
+                    <p>In a world of hot takes, a well-considered opinion is a superpower.</p>
+                `
+            },
+            {
+                id: 5,
+                title: "CSS Grid Changed How I Think About Layouts",
+                description: "A short reflection on how a CSS feature shifted my entire mental model for building interfaces.",
+                tag: "code",
+                tagLabel: "Code",
+                date: "Nov 14, 2024",
+                author: "Alex Chen",
+                readTime: "5 min read",
+                featured: false,
+                content: `
+                    <p>For years, I thought about web layouts in terms of rows. Flexbox reinforced this — everything was a row of items, sometimes a column, sometimes nested. It worked. But it was always a bit of a fight.</p>
+
+                    <h2>Thinking in Two Dimensions</h2>
+                    <p>CSS Grid introduced something that sounds simple but is actually a fundamental shift: two-dimensional thinking. Not just rows, not just columns — both at once. The layout becomes a canvas, and you place items intentionally on that canvas.</p>
+
+                    <pre><code>.layout {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-rows: auto 1fr auto;
+    min-height: 100vh;
+}</code></pre>
+
+                    <h2>The Mental Model Shift</h2>
+                    <p>Before Grid, I'd build a layout by stacking elements and nudging them into position. With Grid, I define the space first, then place things into it. It's the difference between furniture that happens to fit and a room designed around furniture.</p>
+
+                    <h3>Things Grid Made Easy That Used to Be Hard</h3>
+                    <ul>
+                        <li>Holy grail layouts (header, footer, sidebar, content)</li>
+                        <li>Overlapping elements without absolute positioning</li>
+                        <li>Consistent spacing with gap</li>
+                        <li>Responsive layouts with fewer media queries</li>
+                    </ul>
+
+                    <blockquote>
+                        "CSS Grid is not a framework. It's a way of thinking."
+                        <cite>— Rachel Andrew</cite>
+                    </blockquote>
+
+                    <h2>Use Both</h2>
+                    <p>Grid and Flexbox aren't competitors. Flexbox is for component-level alignment. Grid is for page-level layout. Use Grid to define the macro layout, then Flexbox inside components for micro alignment. Together, they handle everything.</p>
+                    <p>Learn Grid. It'll change how you see every layout problem.</p>
+                `
+            }
+        ];
+
+        // ===== STATE =====
+        let currentFilter = 'all';
+        let currentPost = null;
+
+        // ===== THEME =====
+        const themeToggle = document.getElementById('themeToggle');
+        let isDark = false;
+
+        themeToggle.addEventListener('click', () => {
+            isDark = !isDark;
+            document.body.setAttribute('data-theme', isDark ? 'dark' : '');
+            themeToggle.textContent = isDark ? '☀️' : '🌙';
+        });
+
+        // ===== PAGE NAVIGATION =====
+        function showPage(page) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(`${page}-page`).classList.add('active');
+            document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+
+            if (page === 'home') {
+                document.getElementById('nav-home').classList.add('active');
+                document.getElementById('progressBar').style.width = '0%';
+            } else if (page === 'about') {
+                document.getElementById('nav-about').classList.add('active');
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ===== RENDER POSTS =====
+        function renderPosts(data) {
+            const list = document.getElementById('postList');
+            const count = document.getElementById('postCount');
+
+            const filtered = data.filter(p => !p.featured);
+            count.textContent = `${filtered.length} post${filtered.length !== 1 ? 's' : ''}`;
+
+            if (filtered.length === 0) {
+                list.innerHTML = `
+                    <div class="empty-state">
+                        <div style="font-size:2rem">✍️</div>
+                        <p>No posts found. Try a different search.</p>
+                    </div>`;
+                return;
+            }
+
+            list.innerHTML = filtered.map(post => `
+                <a class="post-item" onclick="openPost(${post.id})" href="#">
+                    <div class="post-body">
+                        <div class="post-meta-top">
+                            <span class="post-tag">${post.tagLabel}</span>
+                            ${post.featured ? '<span class="post-featured">Featured</span>' : ''}
+                        </div>
+                        <div class="post-title">${post.title}</div>
+                        <div class="post-excerpt">${post.description}</div>
+                        <div class="post-meta-bottom">
+                            <span class="post-date">${post.date}</span>
+                            <span class="post-read-time">${post.readTime}</span>
+                        </div>
+                    </div>
+                    <span class="post-arrow">↗</span>
+                </a>
+            `).join('');
+        }
+
+        // ===== FILTER =====
+        function setFilter(filter, el) {
+            currentFilter = filter;
+            document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+            filterPosts();
+        }
+
+        function filterPosts() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            let filtered = posts;
+
+            if (currentFilter !== 'all') {
+                filtered = filtered.filter(p => p.tag === currentFilter);
+            }
+
+            if (query) {
+                filtered = filtered.filter(p =>
+                    p.title.toLowerCase().includes(query) ||
+                    p.description.toLowerCase().includes(query)
+                );
+            }
+
+            renderPosts(filtered);
+        }
+
+        // ===== OPEN POST =====
+        function openPost(id) {
+            const post = posts.find(p => p.id === id);
+            if (!post) return;
+            currentPost = post;
+
+            document.getElementById('postTitle').textContent = post.title;
+            document.getElementById('postDesc').textContent = post.description;
+            document.getElementById('postAuthor').textContent = post.author;
+            document.getElementById('postDate').textContent = post.date;
+            document.getElementById('postReadTime').textContent = post.readTime;
+            document.getElementById('articleContent').innerHTML = post.content;
+
+            document.getElementById('postHeaderTags').innerHTML =
+                `<span class="post-tag">${post.tagLabel}</span>`;
+
+            document.getElementById('postFooterTags').innerHTML =
+                `<span class="post-footer-tag">${post.tagLabel}</span>
+                 <span class="post-footer-tag">Writing</span>
+                 <span class="post-footer-tag">2024</span>`;
+
+            // Related posts
+            const related = posts
+                .filter(p => p.id !== id && !p.featured)
+                .slice(0, 2);
+
+            document.getElementById('relatedGrid').innerHTML = related.map(p => `
+                <div class="related-card" onclick="openPost(${p.id})">
+                    <span class="post-tag">${p.tagLabel}</span>
+                    <h4>${p.title}</h4>
+                    <span>${p.date} · ${p.readTime}</span>
+                </div>
+            `).join('');
+
+            showPage('post');
+
+            // Progress bar
+            window.addEventListener('scroll', updateProgress);
+        }
+
+        // ===== READING PROGRESS =====
+        function updateProgress() {
+            const postEl = document.getElementById('post-page');
+            if (!postEl.classList.contains('active')) return;
+            const scrollTop = window.scrollY;
+            const docHeight = document.body.scrollHeight - window.innerHeight;
+            const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+            document.getElementById('progressBar').style.width = pct + '%';
+        }
+
+        // ===== SHARE =====
+        function sharePost(platform) {
+            if (!currentPost) return;
+            if (platform === 'twitter') {
+                showToast('Opening Twitter...');
+            } else if (platform === 'copy') {
+                navigator.clipboard.writeText(window.location.href).then(() => {
+                    showToast('Link copied to clipboard!');
+                }).catch(() => {
+                    showToast('Link copied!');
+                });
+            }
+        }
+
+        // ===== NEWSLETTER =====
+        function subscribeNewsletter(e) {
+            e.preventDefault();
+            const email = document.getElementById('newsletterEmail').value;
+            if (!email) return;
+            document.getElementById('nlSuccess').style.display = 'block';
+            document.getElementById('newsletterEmail').value = '';
+            showToast('Subscribed! ✓');
+            setTimeout(() => {
+                document.getElementById('nlSuccess').style.display = 'none';
+            }, 5000);
+        }
+
+        // ===== TOAST =====
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // ===== INIT =====
+        renderPosts(posts);
+
+    </script>
+</body>
+</html>

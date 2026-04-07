@@ -1,0 +1,1647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechConf 2024 - Global Technology Conference</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #8b5cf6;
+            --accent-color: #ec4899;
+            --dark-color: #1f2937;
+            --light-color: #f3f4f6;
+            --text-color: #374151;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(255, 255, 255, 0.98);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+
+        nav.scrolled {
+            padding: 0.5rem 0;
+            background: rgba(255, 255, 255, 1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark-color);
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .register-btn {
+            padding: 0.7rem 1.8rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .register-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--dark-color);
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 180px 2rem 120px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ffffff" fill-opacity="0.1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,144C960,149,1056,139,1152,128C1248,117,1344,107,1392,101.3L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+            background-size: cover;
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .event-date {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.95;
+            animation: fadeInUp 1s ease 0.2s backwards;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            animation: fadeInUp 1s ease 0.4s backwards;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: white;
+            color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(255,255,255,0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: var(--primary-color);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Countdown Timer */
+        .countdown {
+            background: white;
+            padding: 3rem 2rem;
+            box-shadow: 0 -10px 40px rgba(0,0,0,0.1);
+        }
+
+        .countdown-container {
+            max-width: 800px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .countdown-item {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            padding: 2rem 1rem;
+            border-radius: 15px;
+            color: white;
+        }
+
+        .countdown-number {
+            font-size: 3rem;
+            font-weight: bold;
+            display: block;
+        }
+
+        .countdown-label {
+            font-size: 1rem;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Section Styles */
+        section {
+            padding: 80px 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark-color);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #6b7280;
+            margin-bottom: 4rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* About Section */
+        .about {
+            background: var(--light-color);
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-image {
+            position: relative;
+        }
+
+        .about-image img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+        }
+
+        .about-stats {
+            position: absolute;
+            bottom: -20px;
+            right: -20px;
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .stat-item {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .stat-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .stat-label {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .about-text h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--dark-color);
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+            color: var(--text-color);
+        }
+
+        .features-list {
+            list-style: none;
+            margin-top: 2rem;
+        }
+
+        .features-list li {
+            padding: 0.8rem 0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .features-list i {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+
+        /* Speakers Section */
+        .speakers {
+            background: white;
+        }
+
+        .speakers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 3rem;
+        }
+
+        .speaker-card {
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .speaker-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .speaker-image {
+            position: relative;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            border-radius: 20px;
+        }
+
+        .speaker-image img {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .speaker-card:hover .speaker-image img {
+            transform: scale(1.1);
+        }
+
+        .speaker-social {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .speaker-card:hover .speaker-social {
+            opacity: 1;
+        }
+
+        .speaker-social a {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            transition: all 0.3s;
+        }
+
+        .speaker-social a:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .speaker-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: var(--dark-color);
+        }
+
+        .speaker-role {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .speaker-company {
+            color: #6b7280;
+            font-size: 0.95rem;
+        }
+
+        /* Schedule Section */
+        .schedule {
+            background: var(--light-color);
+        }
+
+        .schedule-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 1rem 2rem;
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .tab-btn:hover {
+            border-color: var(--primary-color);
+        }
+
+        .schedule-content {
+            display: none;
+        }
+
+        .schedule-content.active {
+            display: block;
+        }
+
+        .schedule-item {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            gap: 2rem;
+            align-items: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+
+        .schedule-item:hover {
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transform: translateX(10px);
+        }
+
+        .schedule-time {
+            text-align: center;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 10px;
+        }
+
+        .schedule-time-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .schedule-details h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark-color);
+        }
+
+        .schedule-speaker {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .schedule-description {
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        /* Pricing Section */
+        .pricing {
+            background: white;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .pricing-card {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 20px;
+            padding: 2.5rem;
+            text-align: center;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+        }
+
+        .pricing-card.featured {
+            border-color: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .pricing-badge {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent-color);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .pricing-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .pricing-price {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .pricing-period {
+            opacity: 0.8;
+            margin-bottom: 2rem;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .pricing-features li {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .pricing-card.featured .pricing-features li {
+            border-color: rgba(255,255,255,0.2);
+        }
+
+        .pricing-btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .pricing-card.featured .pricing-btn {
+            background: white;
+            color: var(--primary-color);
+        }
+
+        .pricing-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Sponsors Section */
+        .sponsors {
+            background: var(--light-color);
+            text-align: center;
+        }
+
+        .sponsors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .sponsor-logo {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            transition: transform 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 120px;
+        }
+
+        .sponsor-logo:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .sponsor-logo img {
+            max-width: 100%;
+            max-height: 80px;
+            filter: grayscale(100%);
+            transition: filter 0.3s;
+        }
+
+        .sponsor-logo:hover img {
+            filter: grayscale(0%);
+        }
+
+        /* Registration Section */
+        .registration {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+
+        .registration-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .registration-info h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .registration-info p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .registration-benefits {
+            list-style: none;
+        }
+
+        .registration-benefits li {
+            padding: 1rem 0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .registration-benefits i {
+            font-size: 1.3rem;
+            color: #fbbf24;
+        }
+
+        .registration-form {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+
+        .registration-form h3 {
+            color: var(--dark-color);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--dark-color);
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1.2rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark-color);
+            color: white;
+            padding: 60px 2rem 20px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        .footer-section p {
+            opacity: 0.8;
+            line-height: 1.8;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-section a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: var(--primary-color);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-links a {
+            width: 45px;
+            height: 45px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            opacity: 0.8;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-links {
+                position: fixed;
+                left: -100%;
+                top: 70px;
+                flex-direction: column;
+                background: white;
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                box-shadow: 0 10px 27px rgba(0,0,0,0.05);
+                padding: 2rem 0;
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            .countdown-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .about-content,
+            .registration-content {
+                grid-template-columns: 1fr;
+            }
+
+            .about-stats {
+                position: static;
+                margin-top: 2rem;
+            }
+
+            .schedule-item {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .countdown-number {
+                font-size: 2rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+
+        /* Scroll to Top Button */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 999;
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-calendar-alt"></i> TechConf 2024
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#speakers">Speakers</a></li>
+                <li><a href="#schedule">Schedule</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#register" class="register-btn">Register Now</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <div class="event-date">
+                <i class="far fa-calendar"></i> June 15-17, 2024 | San Francisco, CA
+            </div>
+            <h1>Global Technology Conference 2024</h1>
+            <p>Join 5000+ tech leaders, innovators, and developers for three days of inspiring talks, workshops, and networking opportunities.</p>
+            <div class="hero-buttons">
+                <a href="#register" class="btn btn-primary">
+                    <i class="fas fa-ticket-alt"></i> Get Tickets
+                </a>
+                <a href="#schedule" class="btn btn-secondary">
+                    <i class="far fa-play-circle"></i> View Schedule
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Countdown Timer -->
+    <section class="countdown">
+        <div class="countdown-container">
+            <div class="countdown-item">
+                <span class="countdown-number" id="days">00</span>
+                <span class="countdown-label">Days</span>
+            </div>
+            <div class="countdown-item">
+                <span class="countdown-number" id="hours">00</span>
+                <span class="countdown-label">Hours</span>
+            </div>
+            <div class="countdown-item">
+                <span class="countdown-number" id="minutes">00</span>
+                <span class="countdown-label">Minutes</span>
+            </div>
+            <div class="countdown-item">
+                <span class="countdown-number" id="seconds">00</span>
+                <span class="countdown-label">Seconds</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600" alt="Conference">
+                    <div class="about-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">5000+</div>
+                            <div class="stat-label">Attendees</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">50+</div>
+                            <div class="stat-label">Speakers</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">100+</div>
+                            <div class="stat-label">Sessions</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-text">
+                    <h3>About TechConf 2024</h3>
+                    <p>TechConf is the premier technology conference bringing together industry leaders, innovative startups, and tech enthusiasts from around the world. Experience three days of cutting-edge insights, hands-on workshops, and unparalleled networking opportunities.</p>
+                    <p>Whether you're a developer, entrepreneur, designer, or tech enthusiast, TechConf 2024 offers something for everyone. Join us to explore the latest trends, learn from the best, and shape the future of technology.</p>
+                    <ul class="features-list">
+                        <li>
+                            <i class="fas fa-check-circle"></i>
+                            <span>50+ Industry-leading speakers</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-check-circle"></i>
+                            <span>100+ Interactive sessions and workshops</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-check-circle"></i>
+                            <span>Exclusive networking opportunities</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-check-circle"></i>
+                            <span>Expo with 200+ exhibitors</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Speakers Section -->
+    <section class="speakers" id="speakers">
+        <div class="container">
+            <h2 class="section-title">Featured Speakers</h2>
+            <p class="section-subtitle">Learn from the best minds in technology and innovation</p>
+            <div class="speakers-grid">
+                <div class="speaker-card">
+                    <div class="speaker-image">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400" alt="Speaker 1">
+                        <div class="speaker-social">
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                        </div>
+                    </div>
+                    <h3 class="speaker-name">John Anderson</h3>
+                    <p class="speaker-role">Chief Technology Officer</p>
+                    <p class="speaker-company">Tech Innovations Inc.</p>
+                </div>
+
+                <div class="speaker-card">
+                    <div class="speaker-image">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400" alt="Speaker 2">
+                        <div class="speaker-social">
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                        </div>
+                    </div>
+                    <h3 class="speaker-name">Sarah Mitchell</h3>
+                    <p class="speaker-role">AI Research Director</p>
+                    <p class="speaker-company">FutureTech Labs</p>
+                </div>
+
+                <div class="speaker-card">
+                    <div class="speaker-image">
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400" alt="Speaker 3">
+                        <div class="speaker-social">
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                        </div>
+                    </div>
+                    <h3 class="speaker-name">Michael Chen</h3>
+                    <p class="speaker-role">Founder & CEO</p>
+                    <p class="speaker-company">CloudScale Solutions</p>
+                </div>
+
+                <div class="speaker-card">
+                    <div class="speaker-image">
+                        <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400" alt="Speaker 4">
+                        <div class="speaker-social">
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                        </div>
+                    </div>
+                    <h3 class="speaker-name">Emily Rodriguez</h3>
+                    <p class="speaker-role">VP of Engineering</p>
+                    <p class="speaker-company">DataDrive Systems</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Schedule Section -->
+    <section class="schedule" id="schedule">
+        <div class="container">
+            <h2 class="section-title">Event Schedule</h2>
+            <p class="section-subtitle">Three days packed with inspiring talks and workshops</p>
+            
+            <div class="schedule-tabs">
+                <button class="tab-btn active" data-tab="day1">Day 1 - June 15</button>
+                <button class="tab-btn" data-tab="day2">Day 2 - June 16</button>
+                <button class="tab-btn" data-tab="day3">Day 3 - June 17</button>
+            </div>
+
+            <div class="schedule-content active" id="day1">
+                <div class="schedule-item">
+                    <div class="schedule-time">
+                        <div class="schedule-time-text">09:00 AM</div>
+                    </div>
+                    <div class="schedule-details">
+                        <h3>Registration & Welcome Coffee</h3>
+                        <p class="schedule-speaker">Main Hall</p>
+                        <p class="schedule-description">Check-in, collect your badge, and network with fellow attendees over coffee.</p>
+                    </div>
+                </div>
+
+                <div class="schedule-item">
+                    <div class="schedule-time">
+                        <div class="schedule-time-text">10:00 AM</div>
+                    </div>
+                    <div class="schedule-details">
+                        <h3>Opening Keynote: The Future of AI</h3>
+                        <p class="schedule-speaker">Sarah Mitchell - AI Research Director</p>
+                        <p class="schedule-description">Explore the latest breakthroughs in artificial intelligence and their impact on society.</p>
+                    </div>
+                </div>
+
+                <div class="schedule-item">
+                    <div class="schedule-time">
+                        <div class="schedule-time-text">11:30 AM</div>
+                    </div>
+                    <div class="schedule-details">
+                        <h3>Cloud Architecture Best Practices</h3>
+                        <p class="schedule-speaker">Michael Chen - Founder & CEO</p>
+                        <p class="schedule-description">Learn how to build scalable and secure cloud infrastructure for modern applications.</p>
+                    </div>
+                </div>
+
+                <div class="schedule-item">
+                    <div class="schedule-time">
+                        <div class="schedule-time-text">01:00 PM</div>
+                    </div>
+                    <div class="schedule-details">
+                        <h3>Networking Lunch</h3>
+                        <p class="schedule-speaker">Garden Terrace</p>
+                        <p class="schedule-description">Enjoy a delicious lunch while connecting with speakers and attendees.</p>
+                    </div>
+                </div>
+
+                <div class="schedule-item">
+                    <div class="schedule-time">
+                        <div class="schedule-time-text">02:30 PM</div>
+                    </div>
+                    <div class="schedule-details">
+                        <h3>Workshop: Modern Web Development</h3>
+                        <p class="schedule-speaker">Emily Rodriguez - VP of Engineering</p>
+                        <p class="schedule-description">Hands-on workshop covering the latest frameworks and development techniques.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="schedule-content" id="day2">
+                <div class="schedule-item">
+                    <div class="schedule-time">
+                        <div class="schedule-time-text">09:00 AM</div>
+                    </div>
+                    <div class="schedule-details">
+                        <h3>Blockchain & Web3 Revolution</h3>
+                        <p class="schedule-speaker">John Anderson - CTO</p>
+                        <p class="schedule-description">Discover the transformative potential of blockchain technology and decentralized applications.</p>
+                    </div>
+                </div>
+
+                <div class="schedule-item">
+                    <div class="schedule-time">
+                        <div class="schedule-time-text">10:30 AM</div>
+                    </div>
+                    <div class="schedule-details">
+                        <h3>Cybersecurity in 2024</h3>
+                        <p class="schedule-speaker">Security Panel Discussion</p>
+                        <p class="schedule-description">Expert panel discussing the latest threats and security best practices.</p>
+                    </div>
+                </div>
+
+                <div class="schedule-item">
+                    <div class="schedule-time">
+                        <div class="schedule-time-text">12:00 PM</div>
+                    </div>
+                    <div class="schedule-details">
+                        <h3>Startup Pitch Competition</h3>
+                        <p class="schedule-speaker">Innovation Stage</p>
+                        <p class="schedule-description">Watch promising startups pitch their ideas to investors and win prizes.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="schedule-content" id="day3">
+                <div class="schedule-item">
+                    <div class="schedule-time">
+                        <div class="schedule-time-text">09:00 AM</div>
+                    </div>
+                    <div class="schedule-details">
+                        <h3>DevOps & Automation</h3>
+                        <p class="schedule-speaker">Industry Experts</p>
+                        <p class="schedule-description">Learn how to streamline your development workflow with automation tools.</p>
+                    </div>
+                </div>
+
+                <div class="schedule-item">
+                    <div class="schedule-time">
+                        <div class="schedule-time-text">11:00 AM</div>
+                    </div>
+                    <div class="schedule-details">
+                        <h3>Future of Work & Remote Teams</h3>
+                        <p class="schedule-speaker">Leadership Panel</p>
+                        <p class="schedule-description">Discuss the evolution of work culture in the digital age.</p>
+                    </div>
+                </div>
+
+                <div class="schedule-item">
+                    <div class="schedule-time">
+                        <div class="schedule-time-text">02:00 PM</div>
+                    </div>
+                    <div class="schedule-details">
+                        <h3>Closing Keynote & Awards</h3>
+                        <p class="schedule-speaker">Main Hall</p>
+                        <p class="schedule-description">Conference wrap-up and recognition of outstanding contributions.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <h2 class="section-title">Ticket Pricing</h2>
+            <p class="section-subtitle">Choose the perfect ticket for your needs</p>
+            
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h3 class="pricing-name">Early Bird</h3>
+                    <div class="pricing-price">$299</div>
+                    <div class="pricing-period">Per Person</div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Access to all sessions</li>
+                        <li><i class="fas fa-check"></i> Conference materials</li>
+                        <li><i class="fas fa-check"></i> Lunch & refreshments</li>
+                        <li><i class="fas fa-check"></i> Networking events</li>
+                        <li><i class="fas fa-times"></i> Workshop access</li>
+                    </ul>
+                    <button class="pricing-btn">Select Plan</button>
+                </div>
+
+                <div class="pricing-card featured">
+                    <div class="pricing-badge">Most Popular</div>
+                    <h3 class="pricing-name">Professional</h3>
+                    <div class="pricing-price">$499</div>
+                    <div class="pricing-period">Per Person</div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Access to all sessions</li>
+                        <li><i class="fas fa-check"></i> Conference materials</li>
+                        <li><i class="fas fa-check"></i> Lunch & refreshments</li>
+                        <li><i class="fas fa-check"></i> Networking events</li>
+                        <li><i class="fas fa-check"></i> 5 Workshop tickets</li>
+                    </ul>
+                    <button class="pricing-btn">Select Plan</button>
+                </div>
+
+                <div class="pricing-card">
+                    <h3 class="pricing-name">VIP Pass</h3>
+                    <div class="pricing-price">$799</div>
+                    <div class="pricing-period">Per Person</div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> All Professional benefits</li>
+                        <li><i class="fas fa-check"></i> VIP lounge access</li>
+                        <li><i class="fas fa-check"></i> Speaker meet & greet</li>
+                        <li><i class="fas fa-check"></i> Premium seating</li>
+                        <li><i class="fas fa-check"></i> Exclusive dinner</li>
+                    </ul>
+                    <button class="pricing-btn">Select Plan</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sponsors Section -->
+    <section class="sponsors">
+        <div class="container">
+            <h2 class="section-title">Our Sponsors</h2>
+            <p class="section-subtitle">Proudly supported by industry leaders</p>
+            
+            <div class="sponsors-grid">
+                <div class="sponsor-logo">
+                    <img src="https://via.placeholder.com/200x80/6366f1/ffffff?text=TechCorp" alt="Sponsor 1">
+                </div>
+                <div class="sponsor-logo">
+                    <img src="https://via.placeholder.com/200x80/8b5cf6/ffffff?text=CloudSys" alt="Sponsor 2">
+                </div>
+                <div class="sponsor-logo">
+                    <img src="https://via.placeholder.com/200x80/ec4899/ffffff?text=DataFlow" alt="Sponsor 3">
+                </div>
+                <div class="sponsor-logo">
+                    <img src="https://via.placeholder.com/200x80/10b981/ffffff?text=DevTools" alt="Sponsor 4">
+                </div>
+                <div class="sponsor-logo">
+                    <img src="https://via.placeholder.com/200x80/f59e0b/ffffff?text=SecureNet" alt="Sponsor 5">
+                </div>
+                <div class="sponsor-logo">
+                    <img src="https://via.placeholder.com/200x80/3b82f6/ffffff?text=AppScale" alt="Sponsor 6">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Registration Section -->
+    <section class="registration" id="register">
+        <div class="container">
+            <div class="registration-content">
+                <div class="registration-info">
+                    <h2>Register for TechConf 2024</h2>
+                    <p>Secure your spot at the most anticipated tech conference of the year. Limited seats available!</p>
+                    
+                    <ul class="registration-benefits">
+                        <li>
+                            <i class="fas fa-star"></i>
+                            <span>Access to all keynotes and sessions</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-star"></i>
+                            <span>Hands-on workshops with experts</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-star"></i>
+                            <span>Networking with 5000+ attendees</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-star"></i>
+                            <span>Conference swag and materials</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-star"></i>
+                            <span>Access to recorded sessions</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <form class="registration-form" id="registrationForm">
+                    <h3>Book Your Ticket</h3>
+                    
+                    <div class="form-group">
+                        <label for="fullName">Full Name *</label>
+                        <input type="text" id="fullName" name="fullName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number *</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="company">Company/Organization</label>
+                        <input type="text" id="company" name="company">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ticketType">Ticket Type *</label>
+                        <select id="ticketType" name="ticketType" required>
+                            <option value="">Select ticket type</option>
+                            <option value="early-bird">Early Bird - $299</option>
+                            <option value="professional">Professional - $499</option>
+                            <option value="vip">VIP Pass - $799</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Special Requirements</label>
+                        <textarea id="message" name="message" rows="3"></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-ticket-alt"></i> Complete Registration
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About TechConf</h3>
+                <p>TechConf is the premier technology conference bringing together innovators, developers, and industry leaders from around the world.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#about">About Event</a></li>
+                    <li><a href="#speakers">Speakers</a></li>
+                    <li><a href="#schedule">Schedule</a></li>
+                    <li><a href="#pricing">Pricing</a></li>
+                    <li><a href="#register">Register</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Travel & Hotel</a></li>
+                    <li><a href="#">Code of Conduct</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms & Conditions</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Contact Info</h3>
+                <ul>
+                    <li><i class="fas fa-map-marker-alt"></i> Moscone Center, San Francisco</li>
+                    <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
+                    <li><i class="fas fa-envelope"></i> info@techconf2024.com</li>
+                    <li><i class="fas fa-clock"></i> Mon-Fri: 9AM - 6PM PST</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 TechConf. All rights reserved. Designed with <i class="fas fa-heart"></i> for technology enthusiasts</p>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <div class="scroll-top" id="scrollTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <script>
+        // Mobile Menu Toggle
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Close menu when clicking on a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Countdown Timer
+        const countdownDate = new Date('June 15, 2024 09:00:00').getTime();
+
+        const countdown = setInterval(() => {
+            const now = new Date().getTime();
+            const distance = countdownDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('days').textContent = days.toString().padStart(2, '0');
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+
+            if (distance < 0) {
+                clearInterval(countdown);
+                document.querySelector('.countdown').innerHTML = '<h2>Event Started!</h2>';
+            }
+        }, 1000);
+
+        // Schedule Tabs
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const scheduleContents = document.querySelectorAll('.schedule-content');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all tabs
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                scheduleContents.forEach(content => content.classList.remove('active'));
+
+                // Add active class to clicked tab
+                button.classList.add('active');
+                const tabId = button.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // Registration Form
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            
+            console.log('Registration Data:', data);
+            alert('Thank you for registering! 🎉\n\nYou will receive a confirmation email shortly.');
+            this.reset();
+        });
+
+        // Scroll to Top Button
+        const scrollTopBtn = document.getElementById('scrollTop');
+
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Scroll Animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements for animation
+        document.querySelectorAll('.speaker-card, .schedule-item, .pricing-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s ease-out';
+            observer.observe(el);
+        });
+
+        // Pricing Card Selection
+        document.querySelectorAll('.pricing-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const card = this.closest('.pricing-card');
+                const planName = card.querySelector('.pricing-name').textContent;
+                const price = card.querySelector('.pricing-price').textContent;
+                
+                // Scroll to registration form
+                document.getElementById('register').scrollIntoView({ behavior: 'smooth' });
+                
+                // Pre-select ticket type if it matches
+                const ticketSelect = document.getElementById('ticketType');
+                if (planName.includes('Early Bird')) {
+                    ticketSelect.value = 'early-bird';
+                } else if (planName.includes('Professional')) {
+                    ticketSelect.value = 'professional';
+                } else if (planName.includes('VIP')) {
+                    ticketSelect.value = 'vip';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
